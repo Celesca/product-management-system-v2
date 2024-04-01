@@ -30,8 +30,16 @@ mongoose.connect
   });
 
 // Mock Data
+async function mockData() {
+  const products = [
+    { id: 1, name: 'Laptop', category: 'Electronics', price: 1000, stock: 5},
+    { id: 2, name: 'Typescript Fundamental', category: 'Books', price: 150, stock: 2},
+    { id: 3, name: 'Clean code', category: 'Books', price: 1500, stock: 1}
+  ]
+  await Product.insertMany(products);
+}
 
-
+mockData();
 
 // Middleware
 app.use(express.json());
@@ -52,11 +60,7 @@ app.get('/products', async (req, res) => {
 
 // Get Single Product
 app.get('/products/:id', async (req, res) => {
-  const findProductID = parseInt(req.params.id)
-
-  if (findProductID <= 0 || !findProductID) {
-    return res.status(400).send({message: 'Invalid ID'});
-  }
+  const findProductID = req.params.id
   
   try {
     const product = await Product.findById(findProductID);
@@ -88,18 +92,18 @@ function ProductRequestBody(req, res) {
   return newProduct;
 }
 
-function ValidateProductID(productID, res) {
-  if (productID <= 0 || !productID) {
-    return res.status(400).send({ message: 'Invalid ID' });
-  }
+// function ValidateProductID(productID, res) {
+//   if (productID <= 0 || !productID) {
+//     return res.status(400).send({ message: 'Invalid ID' });
+//   }
 
-   const productIndex = products.findIndex(p => p.id === productID);
-   if (productIndex === -1) {
-    return res.status(404).send({message: 'Product not found'});
-   }
+//    const productIndex = products.findIndex(p => p.id === productID);
+//    if (productIndex === -1) {
+//     return res.status(404).send({message: 'Product not found'});
+//    }
    
-   return productIndex;
-}
+//    return productIndex;
+// }
 
 // POST request
 app.post('/products', async (req, res) => {
@@ -113,17 +117,15 @@ app.post('/products', async (req, res) => {
 
 // PUT request
 app.put('/products/:id', (req, res) => {
-  const updateProductID = parseInt(req.params.id);
-  const productIndex = ValidateProductID(updateProductID, res);
   const updateProduct = ProductRequestBody(req.body, res);
-
-  const product = products[productIndex];
-
-  product.name = updateProduct.name;
-  product.category = updateProduct.category;
-  product.price = updateProduct.price;
-  product.stock = updateProduct.stock;
-  res.json(product);
+  Product.updateOne({_id: req.params.id,}, updateProduct, (err) => {
+    if (err) {
+      res.status(500).send({message: 'Server Error'});
+    }
+    else {
+      res.status(200).send({message: 'Product updated'})
+    }
+  })
 });
 
 // DELETE request
