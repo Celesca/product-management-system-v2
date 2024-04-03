@@ -61,3 +61,25 @@ router.post('/', async (req, res) => {
     }
 })
 
+// PUT request
+router.put('/:id', (req, res) => {
+    const updateProduct = ProductRequestBody(req.body, res);
+    Product.updateOne({_id: req.params.id,}, updateProduct, (err) => {
+      if (err) {
+        res.status(500).send({message: 'Server Error'});
+      }
+      else {
+        res.status(200).send({message: 'Product updated'})
+      }
+    })
+  });
+
+// DELETE request
+router.delete('/:id', (req, res) => {
+    const deletedProductID = parseInt(req.params.id);
+    const productIndex = ValidateProductID(deletedProductID, res);
+    products.splice(productIndex, 1);
+    res.send({message: 'Product deleted'});
+  })
+
+module.exports = router;
