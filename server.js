@@ -71,16 +71,16 @@ app.get('/products/:id', async (req, res) => {
 
 })
 
-function ProductRequestBody(req, res) {
+function ProductRequestBody(req) {
 
   const newProductPrice = parseFloat(req.price);
   const newProductStock = parseInt(req.stock);
 
   if (!req.name || !req.category || !newProductPrice || !newProductStock) {
-    return res.status(400).send({message: 'Invalid request body'});
+    throw new Error('Invalid request body');
   }
   if (newProductPrice <= 0 || newProductStock <= 0) {
-    return res.status(400).send({message: 'Price and Stock must be greater than 0'});
+    throw new Error('Price and Stock must be greater than 0');
   }
   const newProduct = {
       name: req.name,
@@ -92,25 +92,16 @@ function ProductRequestBody(req, res) {
   return newProduct;
 }
 
-// function ValidateProductID(productID, res) {
-//   if (productID <= 0 || !productID) {
-//     return res.status(400).send({ message: 'Invalid ID' });
-//   }
-
-//    const productIndex = products.findIndex(p => p.id === productID);
-//    if (productIndex === -1) {
-//     return res.status(404).send({message: 'Product not found'});
-//    }
-   
-//    return productIndex;
-// }
-
 // POST request
 app.post('/products', async (req, res) => {
     try {
-      const newProduct = await Product.create(ProductRequestBody(req.body, res));
+      const newProductData = ProductRequestBody(req.body);
+      const newProduct = await Product.create(newProductData);
       res.json(newProduct);
     } catch (err) {
+      if (err instanceof Error) {
+        return res.status(400).send({message: err.message});
+      }
       res.status(500).send({message: 'Server Error'});
     }
 })
