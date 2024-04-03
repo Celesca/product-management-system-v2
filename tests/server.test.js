@@ -60,44 +60,44 @@ describe('POST /products Invalid Request', () => {
     })
 });
 
-// describe('POST /products String Stock', () => {
-//     it("should return a 400", async() => {
-//         const res = await request(app).post("/products").send({
-//             name: "New Product",
-//             category: "New Category",
-//             price: 100,
-//             stock: "hello"
-//         });
-//         expect(res.statusCode).toBe(400);
-//         expect(res.body.message).toStrictEqual("Invalid request body");
-//     })
-// });
+describe('POST /products String Stock', () => {
+    it("should return a 400", async() => {
+        const res = await request(app).post("/products").send({
+            name: "New Product",
+            category: "New Category",
+            price: 100,
+            stock: "hello"
+        });
+        expect(res.statusCode).toBe(400);
+        expect(res.body.message).toStrictEqual("Invalid request body");
+    })
+});
 
-// describe('POST /products Minus price', () => {
-//     it("should return a 400", async() => {
-//         const res = await request(app).post("/products").send({
-//             name: "New Product",
-//             category: "New Category",
-//             price: -100,
-//             stock: 10
-//         });
-//         expect(res.statusCode).toBe(400);
-//         expect(res.body.message).toStrictEqual("Price and Stock must be greater than 0");
-//     })
-// });
+describe('POST /products Minus price', () => {
+    it("should return a 400", async() => {
+        const res = await request(app).post("/products").send({
+            name: "New Product",
+            category: "New Category",
+            price: -100,
+            stock: 10
+        });
+        expect(res.statusCode).toBe(400);
+        expect(res.body.message).toStrictEqual("Price and Stock must be greater than 0");
+    })
+});
 
-// describe('POST /products Minus stock', () => {
-//     it("should return a 400", async() => {
-//         const res = await request(app).post("/products").send({
-//             name: "New Product",
-//             category: "New Category",
-//             price: 100,
-//             stock: -10
-//         });
-//         expect(res.statusCode).toBe(400);
-//         expect(res.body.message).toStrictEqual("Price and Stock must be greater than 0");
-//     })
-// });
+describe('POST /products Minus stock', () => {
+    it("should return a 400", async() => {
+        const res = await request(app).post("/products").send({
+            name: "New Product",
+            category: "New Category",
+            price: 100,
+            stock: -10
+        });
+        expect(res.statusCode).toBe(400);
+        expect(res.body.message).toStrictEqual("Price and Stock must be greater than 0");
+    })
+});
 
 // // PUT /products/:id
 
