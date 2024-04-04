@@ -1,17 +1,54 @@
 const request = require('supertest');
 const app = require('../server');
-
+const { connect, closeDatabase, clearDatabase, insertData  } = require('./mockdb');
 
 require("dotenv").config();
 
-// GET Method
 
-describe('GET /products', () => {
-    it("should return all products", async() => {
+const products = [
+    { _id: 1, name: 'Laptop', category: 'Electronics', price: 1000, stock: 5 },
+    { _id: 2, name: 'Typescript Fundamental', category: 'Books', price: 150, stock: 2 },
+    { _id: 3, name: 'Clean code', category: 'Books', price: 1500, stock: 1 }
+];
+
+describe('Test request with mongoose', () => {
+    beforeAll(async () => {
+        await connect();
+        await clearDatabase();
+        await insertData(products);
+    });
+
+    afterEach(async () => {
+        await clearDatabase();
+    });
+
+    afterAll(async () => {
+        await closeDatabase();
+    });
+
+    test("should return all products", async() => {
         const res = await request(app).get("/products");
         expect(res.statusCode).toBe(200);
+    });
+
+    test("should return a single product", async() => {
+        const res = await request(app).get("/products/1");
+        expect(res.statusCode).toBe(200);
+        expect(res.body._id).toBe(1);
     })
-})
+
+});
+
+
+
+// GET Method
+
+// describe('GET /products', () => {
+//     it("should return all products", async() => {
+//         const res = await request(app).get("/products");
+//         expect(res.statusCode).toBe(200);
+//     })
+// })
 
 describe('GET /products/:id normal', () => {
     it("should return a single product", async() => {
@@ -200,35 +237,35 @@ describe('PUT /products/:id Minus stock', () => {
     })
 });
 
-// // DELETE /products/:id
-// describe('DELETE /products/:id normal', () => {
-//     it("should return a 200 and deleted product", async() => {
-//         const res = (await request(app).delete("/products/1"));
-//         expect(res.statusCode).toBe(200);
-//         expect(res.body).toStrictEqual({message: "Product deleted"});
-//     })
-// })
+// DELETE /products/:id
+describe('DELETE /products/:id normal', () => {
+    it("should return a 200 and deleted product", async() => {
+        const res = (await request(app).delete("/products/1"));
+        expect(res.statusCode).toBe(200);
+        expect(res.body).toStrictEqual({message: "Product deleted"});
+    })
+})
 
-// describe('DELETE /products/:id with not found id', () => {
-//     it("should return a 404", async() => {
-//         const res = await request(app).delete("/products/25");
-//         expect(res.statusCode).toBe(404);
-//         expect(res.body.message).toStrictEqual("Product not found");
-//     })
-// })
+describe('DELETE /products/:id with not found id', () => {
+    it("should return a 404", async() => {
+        const res = await request(app).delete("/products/25");
+        expect(res.statusCode).toBe(404);
+        expect(res.body.message).toStrictEqual("Product not found");
+    })
+})
 
-// describe('DELETE /products/:id with invalid id', () => {
-//     it("should return a 400", async() => {
-//         const res = await request(app).delete("/products/-1");
-//         expect(res.statusCode).toBe(400);
-//         expect(res.body.message).toStrictEqual("Invalid ID");
-//     })
-// });
+describe('DELETE /products/:id with invalid id', () => {
+    it("should return a 400", async() => {
+        const res = await request(app).delete("/products/-1");
+        expect(res.statusCode).toBe(400);
+        expect(res.body.message).toStrictEqual("Invalid ID");
+    })
+});
 
-// describe('DELETE /products/:id with string id', () => {
-//     it("should return a 400", async() => {
-//         const res = await request(app).delete("/products/hello");
-//         expect(res.statusCode).toBe(400);
-//         expect(res.body.message).toStrictEqual("Invalid ID");
-//     })
-// })
+describe('DELETE /products/:id with string id', () => {
+    it("should return a 400", async() => {
+        const res = await request(app).delete("/products/hello");
+        expect(res.statusCode).toBe(400);
+        expect(res.body.message).toStrictEqual("Invalid ID");
+    })
+})
