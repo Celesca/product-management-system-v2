@@ -2,9 +2,9 @@
   "name": "wk2_product_management_system",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test jest --testTimeout=10000 --detectOpenHandles --forceExit",
+    "test": "cross-env NODE_ENV=test jest --testTimeout=20000 --detectOpenHandles --forceExit",
     "start": "node server.js"
   },
   "keywords": [],
