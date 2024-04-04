@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Product = require('../models/product');
 
+let productID = Product.length + 1;
+
 function ProductRequestBody(req) {
 
     const newProductPrice = parseFloat(req.price);
@@ -13,14 +15,13 @@ function ProductRequestBody(req) {
     if (newProductPrice <= 0 || newProductStock <= 0) {
       throw new Error('Price and Stock must be greater than 0');
     }
-    const newProduct = {
+    return {
+        _id: productID++,
         name: req.name,
         category: req.category,
         price: newProductPrice,
         stock: newProductStock
-      };
-  
-    return newProduct;
+    };
   }
 
 // Get all products
@@ -31,12 +32,18 @@ router.get('/', async (req, res) => {
     } catch (err) {
       res.status(500).send({message: 'Server Error'});
     }
-  });
+});
 
   
 // Get Single Product
 router.get('/:id', async (req, res) => {
-    const findProductID = req.params.id
+    const findProductID = parseFloat(req.params.id);
+    if (!findProductID || findProductID % 1 !== 0) {
+        return res.status(400).send({message: 'Invalid Product ID'});
+    }
+    if (findProductID <= 0) {
+        return res.status(400).send({message :'Price and Stock must be greater than 0'});
+    }
     
     try {
       const product = await Product.findById(findProductID);
