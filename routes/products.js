@@ -42,11 +42,14 @@ router.get('/:id', async (req, res) => {
         return res.status(400).send({message: 'Invalid Product ID'});
     }
     if (findProductID <= 0) {
-        return res.status(400).send({message :'Price and Stock must be greater than 0'});
+        return res.status(400).send({message :'Product ID must be greater than 0'});
     }
     
     try {
       const product = await Product.findById(findProductID);
+      if (!product) {
+          throw new Error('Product not found');
+      }
       res.json(product);
     } catch (err) {
       return res.status(404).send({message: 'Product not found'});
