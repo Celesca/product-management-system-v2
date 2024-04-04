@@ -114,10 +114,24 @@ router.put('/:id', async (req, res) => {
   });
 
 // DELETE request
-router.delete('/:id', (req, res) => {
-    const deletedProductID = parseInt(req.params.id);
-    const productIndex = ValidateProductID(deletedProductID, res);
-    products.splice(productIndex, 1);
+router.delete('/:id', async(req, res) => {
+    try {
+        ValidateProductID(parseFloat(req.params.id));
+
+    } catch {
+        return res.status(400).send({message: 'Invalid Product ID'});
+    }
+
+    try {
+        const product = await Product.findById(parseInt(req.params.id));
+        if (!product) {
+            throw new Error('Product not found');
+        }
+    } catch {
+        return res.status(404).send({message: 'Product not found'});
+    }
+
+    Product.deleteOne({_id: parseInt(req.params.id)});
     res.send({message: 'Product deleted'});
   })
 
