@@ -6,10 +6,9 @@ dotenv.config()
 
 const app = express();
 
-await connectDb();
+connectDb();
 const port = process.env.NODE_LOCAL_PORT || 3000;
-
-await mockData();
+mockData();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
