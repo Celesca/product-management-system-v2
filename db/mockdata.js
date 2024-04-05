@@ -10,8 +10,12 @@ async function mockData() {
             { _id: 3, name: 'Clean code', category: 'Books', price: 1500, stock: 1 }
         ];
 
-        // Insert new mock data
-        await Product.insertMany(products);
+        // Use bulk write operation for faster insertion
+        await Product.bulkWrite(products.map(product => ({
+            insertOne: {
+                document: product
+            }
+        })));
         
         console.log('Mock data inserted successfully.');
     } catch (error) {
