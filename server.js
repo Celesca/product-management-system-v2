@@ -8,7 +8,6 @@ const app = express();
 
 connectDb();
 const port = process.env.NODE_LOCAL_PORT || 3000;
-
 mockData();
 
 app.use(express.json());

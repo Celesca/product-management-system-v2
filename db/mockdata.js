@@ -10,7 +10,6 @@ async function mockData() {
             { _id: 3, name: 'Clean code', category: 'Books', price: 1500, stock: 1 }
         ];
 
-        // Insert new mock data
         await Product.insertMany(products);
         
         console.log('Mock data inserted successfully.');
