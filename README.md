@@ -1,6 +1,12 @@
-### Product Management System
+### Product Management System v2
 
 Product Management System is the backend server that use to manage product.
+In this version, I use the MongoDB to store and manage the data instead of Mocking data with JavaScript object.
+
+Thanks to this project I have the opportunities to use MongoDB for first time and writing the tests again
+because I need to mock the data in mongodb right? So I use the Mongo server memory to mock data in unit testing.
+
+I also use the Mongoose to connect to MongoDB.
 
 ### Installation
 
@@ -11,6 +17,9 @@ Product Management System is the backend server that use to manage product.
 `npm start`
 
 Then trying API endpoints with Postman or Web Browser at Port 3000.
+
+### Docker
+
 
 ### API Endpoints Guidelines
 
