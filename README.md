@@ -17,8 +17,11 @@ I also use the Mongoose to connect to MongoDB.
 `npm start`
 
 Then trying API endpoints with Postman or Web Browser at Port 3000.
+You can track the database by open your MongoDBCompass with Uri mongodb://localhost:27017.
 
 ### Docker
+
+Current unavailable
 
 
 ### API Endpoints Guidelines
