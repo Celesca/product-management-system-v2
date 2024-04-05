@@ -1,12 +1,12 @@
-FROM node
+FROM node:alpine
 
-WORKDIR /app
+WORKDIR /usr/src/app
 
-COPY package.json .
+COPY package*.json .
 
 RUN npm install
 
-COPY . ./
+COPY . .
 
 EXPOSE 3000
 
