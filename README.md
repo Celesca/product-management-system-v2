@@ -3,9 +3,7 @@
 Product Management System is the backend server that use to manage product.
 In this version, I use the MongoDB to store and manage the data instead of Mocking data with JavaScript object.
 
-Thanks to this project I have the opportunities to use MongoDB for first time and writing the tests again
-because I need to mock the data in mongodb right? So I use the Mongo server memory to mock data in unit testing.
-
+Thanks to this project I have the opportunities to use MongoDB for first time.
 I also use the Mongoose to connect to MongoDB and arranged the project structure, So it has low coupling and high cohesion.
 
 ### Installation
