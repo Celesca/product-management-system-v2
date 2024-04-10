@@ -14,6 +14,8 @@ I also use the Mongoose to connect to MongoDB.
 
 `cd product-management-system`
 
+`npm i`
+
 `npm start`
 
 Then trying API endpoints with Postman or Web Browser at Port 3000.
